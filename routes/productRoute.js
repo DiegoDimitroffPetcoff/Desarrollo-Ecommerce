@@ -11,9 +11,11 @@ const io = new IOServer(httpServer);
 
 app.use(express.static("./public"));
 
-const chat = [];
+
 const contenedor = new Contenedor();
 const prueba = contenedor.read();
+const chat = contenedor.readChat();
+
 
 io.on("connection", (socket) => {
   console.log("Cliente en la Home de la web");
@@ -32,8 +34,14 @@ io.on("connection", (socket) => {
 
   socket.emit("chat", chat);
 
+
+
+
+
   socket.on("newChat", (data) => {
-    Date(data);
+    // tal vez me conviene enviar toda la data trackeada desde chat.js
+    data.author.avatar = "avatar"
+
     contenedor.saveChat(data);
     chat.push(data);
     io.sockets.emit("chat", chat);

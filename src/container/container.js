@@ -5,6 +5,11 @@ class Contenedor {
     this.route = "./productos.txt";
     this.id = 1;
   }
+
+  //   saveInFile(content) {
+//     fs.writeFileSync(this.fileName, JSON.stringify(content, null,'\t'));
+// }
+
   save(x) {
     let array = [];
     let object = x;
@@ -29,23 +34,27 @@ class Contenedor {
     this.id = lastId++;
   }
 
+
+
   saveChat(x) {
     let array = [];
     let object = x;
 
     try {
-      let data = fs.readFileSync("./historial.txt", "utf-8");
+      let data = fs.readFileSync("./chat.txt", "utf-8");
+     
       array = JSON.parse(data);
       console.log("Ingreso por TRY");
-    } catch {
-      console.log("catch error");
+    } catch (error){
+      console.log(`Error: ${error}`);
+      // fs.writeFileSync("../../historial.txt", JSON.stringify(array))
     }
 
     object.id = array.length + 1;
     array.push(object);
 
     let lastId = array.length + 1;
-    fs.writeFileSync("./historial.txt", JSON.stringify(array));
+    fs.writeFileSync("./chat.txt", JSON.stringify(array, null,'\t'));
 
     this.id = lastId++;
   }
@@ -117,6 +126,13 @@ class Contenedor {
 
   read() {
     let readFinal = fs.readFileSync(this.route, "utf-8");
+
+    let allProducts = JSON.parse(readFinal);
+
+    return allProducts;
+  }
+  readChat() {
+    let readFinal = fs.readFileSync("./chat.txt", "utf-8");
 
     let allProducts = JSON.parse(readFinal);
 

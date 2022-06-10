@@ -1,0 +1,71 @@
+[
+	{
+		"author": {
+			"id": 1,
+			"nombre": "Juan",
+			"apellido": "Perez",
+			"edad": "22",
+			"alias": "JuanP",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Hola!"
+		},
+		"id": 1
+	},
+	{
+		"author": {
+			"id": 1,
+			"nombre": "Diego",
+			"apellido": "Dimitroff",
+			"edad": "32",
+			"alias": "Dimi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Buenas tardes!"
+		},
+		"id": 2
+	},
+	{
+		"author": {
+			"id": 1,
+			"nombre": "",
+			"apellido": "",
+			"edad": "",
+			"alias": "",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": ""
+		},
+		"id": 3
+	},
+	{
+		"author": {
+			"id": 1,
+			"nombre": "Cornelio",
+			"apellido": "Saavedra",
+			"edad": "209",
+			"alias": "ELCorne",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Buenas buenas!!"
+		},
+		"id": 4
+	},
+	{
+		"author": {
+			"nombre": "Diego",
+			"apellido": "Dimitroff",
+			"edad": "32",
+			"alias": "Dimi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "NUEVO MENSAJE "
+		},
+		"id": 5
+	}
+]
