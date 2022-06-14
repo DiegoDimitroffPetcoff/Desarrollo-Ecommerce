@@ -2,12 +2,18 @@
 const socket = io.connect();
 
 // --------------------
+function renderCompression(data) {
 
+  let compresion = data - data - data
+  const html = `<h1>El porcentaje de compresion:</h1> <br>
+  <h1> % ${compresion}</h1>`
+  document.getElementById("compression").innerHTML = html;
+}
 function renderChat(data) {
   const html = data
   
     .map((elem, index) => {
-      console.log(elem);
+      // console.log(elem);
       let fecha = new Date();
 
       let dia = fecha.getDate();
@@ -28,14 +34,10 @@ function renderChat(data) {
 
   document.getElementById("filaTexto").innerHTML = html;
 }
-
-// document.getElementById("filaTexto2").innerHTML =contenedor.read("./chat.js");
-// console.log(filaTexto2);
-
-
 function addMessagechat(e) {
   const mensaje = {
     author: {
+      email: document.getElementById("email").value,
       nombre: document.getElementById("nombre").value,
       apellido: document.getElementById("apellido").value,
       edad: document.getElementById("edad").value,
@@ -51,6 +53,14 @@ function addMessagechat(e) {
 }
 
 socket.on("chat", (data) => {
-
+  console.log('---SI DESDE EL CLIENTE1');
   renderChat(data);
 });
+
+socket.on("compression", data => {
+console.log('---SI DESDE EL CLIENTE');
+renderCompression(data)
+  });
+
+
+
