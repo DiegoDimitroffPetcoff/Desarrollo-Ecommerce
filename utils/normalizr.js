@@ -19,21 +19,28 @@ function normalization(params) {
   });
 
   const normalicedBlog = normalize(params, dataSchema);
-  // console.log(util.inspect(normalicedBlog, false, 12, true));
-  // console.log("antes");
-  // console.log(JSON.stringify(params).length);
-  // console.log("despues");
-  // console.log(JSON.stringify(normalicedBlog).length);
   return normalicedBlog;
 }
 
-// console.log("------");
+// function desNormalization(params) {
+//   const authorSchema = new schema.Entity(
+//     "E-mail",
+//     {},
+//     { idAttribute: "email" }
+//   );
+//   const postSchema = new schema.Entity("POST", {
+//     author: authorSchema,
+//   });
+//   const dataSchema = new schema.Entity("DATA", {
+//     posts: [postSchema],
+//   });
+//   const normalicedBlog = normalize(params, dataSchema);
+//   const desnormalization = denormalize(
+//     params.result,
+//     dataSchema,
+//     params.entities
+//   );
+//   console.log(desnormalization);
+// }
 
-// const desnormalization = denormalize(
-//   normalicedBlog.result,
-
-//   normalicedBlog.entities
-// );
-// console.log(desnormalization);
-
-module.exports = normalization;
+module.exports = {normalization};

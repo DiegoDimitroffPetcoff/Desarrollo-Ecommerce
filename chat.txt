@@ -355,26 +355,12 @@
 			"nombre": "Nueva Persona",
 			"apellido": "Sin Apellido",
 			"edad": "00",
-			"alias": "Nulo",
+			"alias": "NO TIENE",
 			"avatar": "avatar"
 		},
 		"text": {
 			"text": "Buenas!!! "
 		},
 		"id": 26
-	},
-	{
-		"author": {
-			"email": "",
-			"nombre": "",
-			"apellido": "",
-			"edad": "",
-			"alias": "",
-			"avatar": "avatar"
-		},
-		"text": {
-			"text": ""
-		},
-		"id": 27
 	}
 ]
