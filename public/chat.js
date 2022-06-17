@@ -26,7 +26,7 @@ function renderChat(data) {
       let segundos = fecha.getSeconds();
 
       return `<div>
-            <strong><h5>${elem.author.email} ${elem.author.apellido}:</h5></strong>
+            <strong><h5>${elem.author.nombre} ${elem.author.apellido}:</h5></strong>
             <h6>Menssage sent on ${dia}/${mes}/${anio} Time: ${hora}${minutos}${segundos}</h6>
             <p><em>${elem.text.text}</em></p>
         </div>`;

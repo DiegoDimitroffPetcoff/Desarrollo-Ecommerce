@@ -362,5 +362,75 @@
 			"text": "Buenas!!! "
 		},
 		"id": 26
+	},
+	{
+		"author": {
+			"email": "diego@gmail.com",
+			"nombre": "Diego",
+			"apellido": "Dimitroff",
+			"edad": "32",
+			"alias": "Dimi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Buenos dias!"
+		},
+		"id": 27
+	},
+	{
+		"author": {
+			"email": "valeri@gmail.com",
+			"nombre": "Valeria Carolina",
+			"apellido": "Ayala",
+			"edad": "26",
+			"alias": "Vale",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Como estan todos hoy?"
+		},
+		"id": 28
+	},
+	{
+		"author": {
+			"email": "sofia@gmail.com",
+			"nombre": "Sofia",
+			"apellido": "Dimitroff",
+			"edad": "54",
+			"alias": "Sofi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Buenas!"
+		},
+		"id": 29
+	},
+	{
+		"author": {
+			"email": "diego@gmail.com",
+			"nombre": "Diego",
+			"apellido": "Dimitroff",
+			"edad": "32",
+			"alias": "Dimi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Como estan?"
+		},
+		"id": 30
+	},
+	{
+		"author": {
+			"email": "diego@gmail.com",
+			"nombre": "Diego",
+			"apellido": "Dimitroff",
+			"edad": "32",
+			"alias": "Dimi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Alguien disponible?"
+		},
+		"id": 31
 	}
 ]

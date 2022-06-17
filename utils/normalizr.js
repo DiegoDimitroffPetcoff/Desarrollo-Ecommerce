@@ -22,25 +22,5 @@ function normalization(params) {
   return normalicedBlog;
 }
 
-// function desNormalization(params) {
-//   const authorSchema = new schema.Entity(
-//     "E-mail",
-//     {},
-//     { idAttribute: "email" }
-//   );
-//   const postSchema = new schema.Entity("POST", {
-//     author: authorSchema,
-//   });
-//   const dataSchema = new schema.Entity("DATA", {
-//     posts: [postSchema],
-//   });
-//   const normalicedBlog = normalize(params, dataSchema);
-//   const desnormalization = denormalize(
-//     params.result,
-//     dataSchema,
-//     params.entities
-//   );
-//   console.log(desnormalization);
-// }
 
 module.exports = {normalization};

@@ -12,11 +12,11 @@ function addMessage(e) {
 
 function render(data) {
   const id = data
-  .map((elem, index) => {
-    return `<div>${elem.id}</div>`;
-  })
-  .join("  ");
-document.getElementById("id").innerHTML = id;
+    .map((elem, index) => {
+      return `<div>${elem.id}</div>`;
+    })
+    .join("  ");
+  document.getElementById("id").innerHTML = id;
 
   const object = data
     .map((elem, index) => {
@@ -28,7 +28,7 @@ document.getElementById("id").innerHTML = id;
   const price = data
     .map((elem, index) => {
       return `
-    <div>${elem.price}</div>`;
+    <div>$${elem.price}</div>`;
     })
     .join(" ");
   document.getElementById("price").innerHTML = price;
@@ -37,31 +37,3 @@ document.getElementById("id").innerHTML = id;
 socket.on("messages", (data) => {
   render(data);
 });
-
-// // --------------------
-// function renderChat(data) {
-//   const html = data
-//     .map((elem, index) => {
-//       return `<div>
-//           <strong>${elem.author}</strong>:
-//           <em>${elem.text}</em>
-//       </div>`;
-//     })
-//     .join(" ");
-
-//   document.getElementById("filaTexto").innerHTML = html;
-// }
-// function addMessagechat(e) {
-//   const mensaje = {
-//     author: document.getElementById("username").value,
-
-//     text: document.getElementById("texto").value,
-//   };
-
-//   socket.emit("newChat", mensaje);
-//   return false;
-// }
-// socket.on("chat", (data) => {
-
-//   renderChat(data);
-// });
