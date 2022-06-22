@@ -7,7 +7,12 @@
     </header>
     
     <main>
-        <center>
+  
+      {{#if data.nombre }}
+     <h1>Bienvenido {{data.nombre}}!  </h1>
+
+      {{/if}}
+              <center>
         <div class="jumbotron">
             <h1>Add new Product</h1>
             <h5>Fill in all the square to add a new product</h5>

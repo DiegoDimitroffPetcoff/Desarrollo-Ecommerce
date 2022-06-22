@@ -5,13 +5,12 @@ const session = require("express-session");
 const ChatContainer = require("../src/daos/file/chatContainer");
 const ProductosContainer = require("../src/daos/file/productosContainer");
 
-
 const util = require("util");
 const { fakerCreate } = require("../utils/mocks");
 const { normalization } = require("../utils/normalizr");
 
 const compressionRatio = require("../utils/calculator");
-const userLogged = require("../utils/sessions");
+const { userLogged, renderName, logOut } = require("../utils/sessions");
 
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
@@ -82,25 +81,17 @@ io.on("connection", (socket) => {
   }
 });
 
-let nameUser = null
 app.get("/login", (req, res) => {
-  req.session.user = session.user;
-  req.session.logged = session.logged;
-
-  io.on("connection", (socket) => {
-   
-    socket.on("newLog", (data) => {
-      nameUser = data
-      session.user = data;
-      session.logged = true;
-      // socket.emit("logeado",JSON.stringify(nameUser))
-    });
-    socket.emit("logeado",JSON.stringify(nameUser))
-    
-
-  });
-  
   res.render("login", { root: __dirname });
+});
+
+app.post("/login", (req, res) => {
+  console.log(req.body);
+  req.session.user = req.body.name;
+  req.session.logged = true;
+  let data = req.body
+
+  res.render("main", { data });
 });
 
 app.get("/logout", (req, res) => {
@@ -110,7 +101,7 @@ app.get("/logout", (req, res) => {
     }
   });
 
-  res.send("session cerrada");
+  res.render("logout", { root: __dirname });
 });
 
 app.get("/", userLogged, (req, res) => {
