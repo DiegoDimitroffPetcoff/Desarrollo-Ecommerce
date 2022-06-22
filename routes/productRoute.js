@@ -1,23 +1,43 @@
 const express = require("express");
 const app = express();
+const session = require("express-session");
 
 const ChatContainer = require("../src/daos/file/chatContainer");
 const ProductosContainer = require("../src/daos/file/productosContainer");
+
 
 const util = require("util");
 const { fakerCreate } = require("../utils/mocks");
 const { normalization } = require("../utils/normalizr");
 
 const compressionRatio = require("../utils/calculator");
+const userLogged = require("../utils/sessions");
 
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
 const fs = require("fs");
+const { response } = require("express");
 
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
+
+app.use(
+  session({
+    // store:new FileStore({path: './sesiones',ttl:300,retries:0}),
+    secret: "user",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      // Session expires after 1 min of inactivity.
+      expires: 60000,
+    },
+  })
+);
+
 const productos = new ProductosContainer();
 
 const chatContainer = new ChatContainer();
@@ -62,15 +82,46 @@ io.on("connection", (socket) => {
   }
 });
 
+let nameUser = null
+app.get("/login", (req, res) => {
+  req.session.user = session.user;
+  req.session.logged = session.logged;
 
-app.get("/", function (req, res) {
+  io.on("connection", (socket) => {
+   
+    socket.on("newLog", (data) => {
+      nameUser = data
+      session.user = data;
+      session.logged = true;
+      // socket.emit("logeado",JSON.stringify(nameUser))
+    });
+    socket.emit("logeado",JSON.stringify(nameUser))
+    
+
+  });
+  
+  res.render("login", { root: __dirname });
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      res.send({ status: "Logout Error", body: error });
+    }
+  });
+
+  res.send("session cerrada");
+});
+
+app.get("/", userLogged, (req, res) => {
   res.render("main", { root: __dirname });
 });
-app.get("/chat", function (req, res) {
+
+app.get("/chat", userLogged, (req, res) => {
   res.render("about", { root: __dirname });
 });
 
-app.get("/test/:num", function (req, res) {
+app.get("/test/:num", userLogged, (req, res) => {
   try {
     res.jsonp(productos.mocks(req.params.num));
   } catch (err) {
@@ -79,4 +130,3 @@ app.get("/test/:num", function (req, res) {
 });
 
 module.exports = { httpServer, app };
-

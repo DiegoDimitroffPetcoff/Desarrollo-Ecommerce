@@ -1,0 +1,38 @@
+<head>
+
+    <script src="/login.js" defer></script>
+    <script src="../utils/rederName.js" defer></script>
+    
+</head>
+<body class="container">
+    <header>
+        {{>header}}
+
+    </header>
+    
+    <main>
+        <div class="jumbotron">
+               <div id="compression"></div>
+    <h1>Logearse</h1>
+    
+    <form onsubmit="addLogg(this)">        
+        <input type="text" id="user" placeholder="Nombre"><br>
+        <input type="submit" value="enviar"><br>
+    </form>
+    
+
+
+
+
+
+
+  
+    <div id="filaTexto"></div>
+ 
+    </main>
+
+    <footer>
+        {{>footer}}
+    </footer>
+
+</body>
