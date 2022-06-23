@@ -1,6 +1,7 @@
 const socket = io.connect();
 
 function addMessage(e) {
+  alert("Agregaste un nuevo producto")
   const mensaje = {
     title: document.getElementById("object_searched").value,
     price: document.getElementById("price_searched").value,
@@ -11,6 +12,7 @@ function addMessage(e) {
 }
 
 function render(data) {
+  console.log(data);
   const id = data
     .map((elem, index) => {
       return `<div>${elem.id}</div>`;
@@ -32,8 +34,11 @@ function render(data) {
     })
     .join(" ");
   document.getElementById("price").innerHTML = price;
+
+  
 }
 
 socket.on("messages", (data) => {
   render(data);
+  
 });

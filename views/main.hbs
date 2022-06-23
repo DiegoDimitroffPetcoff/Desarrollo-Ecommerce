@@ -9,14 +9,14 @@
     <main>
   
       {{#if data.nombre }}
-     <h1>Bienvenido {{data.nombre}}!  </h1>
+     <h1>Bienvenido {{name}}!  </h1>
 
       {{/if}}
               <center>
         <div class="jumbotron">
             <h1>Add new Product</h1>
             <h5>Fill in all the square to add a new product</h5>
-                <form onsubmit="addMessage(this)">
+                <form onsubmit="addMessage(this)" method="post">
                 <label>Add Object:</label>
                 <input type="text" name="title" id="object_searched" />
                 <br/>

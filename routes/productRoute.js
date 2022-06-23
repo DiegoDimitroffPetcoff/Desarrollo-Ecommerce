@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const ChatContainer = require("../src/daos/file/chatContainer");
 const ProductosContainer = require("../src/daos/file/productosContainer");
@@ -10,7 +11,7 @@ const { fakerCreate } = require("../utils/mocks");
 const { normalization } = require("../utils/normalizr");
 
 const compressionRatio = require("../utils/calculator");
-const { userLogged, renderName, logOut } = require("../utils/sessions");
+const userLogged = require("../utils/sessions");
 
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
@@ -24,12 +25,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
 
+// app.use(
+//   session({
+//     // store:new FileStore({path: './sesiones',ttl:300,retries:0}),
+//     secret: "user",
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: {
+//       // Session expires after 1 min of inactivity.
+//       expires: 60000,
+//     },
+//   })
+// );
+
 app.use(
   session({
-    // store:new FileStore({path: './sesiones',ttl:300,retries:0}),
+    store: MongoStore.create({ mongoUrl: "mongodb://localhost/ecommerceDB" }),
     secret: "user",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       // Session expires after 1 min of inactivity.
       expires: 60000,
@@ -82,16 +96,18 @@ io.on("connection", (socket) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("login", { root: __dirname });
+  res.render("login");
 });
+let name = "NO HAY NOMBRE";
 
 app.post("/login", (req, res) => {
-  console.log(req.body);
-  req.session.user = req.body.name;
+  req.session.user = req.body.nombre;
+  
   req.session.logged = true;
-  let data = req.body
+  let data = req.body;
+  name = req.session.user;
 
-  res.render("main", { data });
+  res.render("main", { data, name });
 });
 
 app.get("/logout", (req, res) => {
@@ -101,15 +117,17 @@ app.get("/logout", (req, res) => {
     }
   });
 
-  res.render("logout", { root: __dirname });
+  res.render("logout", { name });
 });
 
 app.get("/", userLogged, (req, res) => {
-  res.render("main", { root: __dirname });
+  res.render("main", { name });
 });
-
+app.post("/", userLogged, (req, res) => {
+  res.render("main", { name });
+});
 app.get("/chat", userLogged, (req, res) => {
-  res.render("about", { root: __dirname });
+  res.render("about", { name });
 });
 
 app.get("/test/:num", userLogged, (req, res) => {
