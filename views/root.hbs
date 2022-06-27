@@ -8,22 +8,30 @@
 
     
     <main>
-        <center>
         <div class="jumbotron">
                <div id="compression"></div>
-    <h1>Sesion Cerrada. Hasta luego {{user.lastName}} {{user.firstName}}!</h1></main>
-            </div>
-</center>
 <center>
-<h6>Logearse Nuevamente</h6>
-    
+   
+<h1>Aplicacion</h1>
+
+
 <form action="/login">
     <div class="form-group">
-        <input class="btn btn-success my-3" type="submit" value="Login">
+        <input class="btn btn-success my-3" type="submit" value="Logearse">
     </div>
-   
 </form>
- </center>
+
+
+<form action="/signUp">
+    <div class="form-group">
+        <input class="btn btn-success my-3" type="submit" value="Registrarse">
+    </div>
+</form>
+</center>
+
+</div>
+    </main>
+
     <footer>
         {{>footer}}
     </footer>

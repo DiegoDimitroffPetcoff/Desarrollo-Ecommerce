@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 
 const httpServer = require('./routes/productRoute')
+// const httpServerlog = require('./routes/logRoutes')
+
 
 
 
@@ -18,12 +20,15 @@ app.engine(
     defaultLayout: "index.hbs",
     layoutsDir: __dirname + "/views/layouts",
     partialsDir: __dirname + "/views/partials/",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true}
   })
 );
 
 app.set("view engine", "hbs");
 app.set("views", "./views");
-//
+
 
 let storage = multer.diskStorage({
   destination: function (req, res, cb) {
@@ -36,7 +41,8 @@ let storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.use("/", httpServer.app);
+app.use("/root", httpServer.app);
+// app.use("/", httpServerlog);
 
 
 

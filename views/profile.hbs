@@ -7,6 +7,23 @@
     </header>
     
     <main>
+        {{#if isUser}}
+    <div class="container text-center my-3">
+        <div class="jumbotron" style="background-color: green;color: white;">
+            <h1>USER OK LOGIN!</h1>
+            <h2><i>Bienvenido {{user.userName}}</i></h2>
+            <br>
+            <h3>Nombre: {{user.firstName}}</h3>
+            <h3>Apellido: {{user.lastName}}</h3>
+            <h3>Email: {{user.email}}</h3>
+            <form action="/">
+                <div class="text-center"></div>
+                    <button class="btn btn-danger my-5">LOGOUT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{{/if}}
 
               <center>
         <div class="jumbotron">

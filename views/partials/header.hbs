@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Productos</a>
+  <a class="navbar-brand" href="/productos">Productos</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -13,6 +13,10 @@
       </li>
 
     </ul>
+
+    {{#if isUser}}
+      <h1>{{user.lastName}} {{user.firstName}} </h1>{{/if}}
+
   </div>
-<h2>{{name}} </h2>
+
 </nav>
