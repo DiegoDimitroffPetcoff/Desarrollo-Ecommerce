@@ -1,55 +1,16 @@
-const express = require("express");
-const app = express();
 
-const httpServer = require('./routes/productRoute')
-// const httpServerlog = require('./routes/logRoutes')
+const {app }= require('./app')
+// const path = require("path");
+const { SERVER, route } = require("./routes/productRoute");
 
-
-
-
-const multer = require("multer");
-const handlebars = require("express-handlebars");
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.engine(
-  "hbs",
-  handlebars.engine({
-    extname: ".hbs",
-    defaultLayout: "index.hbs",
-    layoutsDir: __dirname + "/views/layouts",
-    partialsDir: __dirname + "/views/partials/",
-    runtimeOptions: {
-      allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true}
-  })
-);
-
-app.set("view engine", "hbs");
-app.set("views", "./views");
+const dotenv = require("dotenv");
 
 
-let storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
+const PORT = process.env.PORT
 
-const upload = multer({ storage: storage });
-
-app.use("/root", httpServer.app);
-// app.use("/", httpServerlog);
-
-
-
-httpServer.httpServer.listen(8080, () => {
-  console.log('Server on port 8080');
+app.listen(PORT, () => {
+  console.log(`Server on ${PORT}`);
 })
-httpServer.httpServer.on("Error", (error) => console.log("error en servidor ${error}"));
-
+SERVER.on("Error", (error) => console.log("error en servidor ${error}"));
 
 

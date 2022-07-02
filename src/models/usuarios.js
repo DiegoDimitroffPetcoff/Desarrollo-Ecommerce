@@ -1,7 +1,12 @@
+// const { configs } = require('dotenv');
 const mongoose = require('mongoose');
-const {MONGO_URI} = require('../config/globals')
+require('dotenv').config()
+const configs = require('../config/globals')
 
-mongoose.connect(MONGO_URI,{
+
+console.log(configs.MONGO_URI);
+
+mongoose.connect(configs.MONGO_URI,{
     useNewUrlParser:true,
     useUnifiedTopology:true
 }, ()=> console.log('Connected'));
