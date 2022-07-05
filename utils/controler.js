@@ -60,6 +60,28 @@ function getRoot(req, res) {
       }
     });
   }
+
+  // CHILD CONTROLER---------------------------
+  // function randomsControler(req, res)  {
+  //   let num = null;
+  //   if (req.query.cant == undefined) {
+  //     num = 100000;
+  //   } else {
+  //     num = req.query.cant;
+  //   }
+  //   const child = fork("utils/ramdomsChild.js");
+  //   child.send(num);
+  //   child.on("message", (data) => {
+  //     try {
+  //       let mensaje = `Se han calculado ${num} de numeros:`;
+  //       let result = JSON.parse(data);
+  //       res.json({ mensaje, result });
+  //     } catch (error) {
+  //       console.log("ERROR");
+  //       console.log(error);
+  //     }
+  //   });
+  // }
   
   module.exports = {
     getRoot,
@@ -71,5 +93,6 @@ function getRoot(req, res) {
     getFailsignup,
     getLogout,
     chatLogin
+
   };
   

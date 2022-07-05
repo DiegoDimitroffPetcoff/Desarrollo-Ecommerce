@@ -1,21 +1,22 @@
 const express = require("express");
 const app = express();
 
+
 const { SERVER, route } = require("./routes/productRoute");
 
 
 const multer = require("multer");
 const handlebars = require("express-handlebars");
-
-const path = require("path");
-const dotenv = require("dotenv");
-dotenv.config({
-  path:
-    process.env.MODO == "production"
-      ? path.resolve(__dirname, "dev.env")
-      : path.resolve(__dirname, "testing.env"),
-});
-console.log(`Ambiente: ${process.env.AMBIENTE}`);
+const dotenv = require("dotenv").config();
+// const path = require("path");
+// const dotenv = require("dotenv");
+// dotenv.config({
+//   path:
+//     process.env.MODO == "production"
+//       ? path.resolve(__dirname, "dev.env")
+//       : path.resolve(__dirname, "testing.env"),
+// });
+// console.log(`Ambiente: ${process.env.AMBIENTE}`);
 
 
 app.use(express.json());
@@ -38,6 +39,7 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", "./views");
 
+
 let storage = multer.diskStorage({
   destination: function (req, res, cb) {
     cb(null, "uploads");
@@ -50,7 +52,3 @@ let storage = multer.diskStorage({
 app.use(route);
 const upload = multer({ storage: storage });
 module.exports = {app};
-// module.exports ={app,
-//   MONGO_URI: process.env.MONGO_URI ||'',
-//   TIEMPO_EXPIRACION: process.env.TIEMPO_EXPIRACION|| 3000
-// }

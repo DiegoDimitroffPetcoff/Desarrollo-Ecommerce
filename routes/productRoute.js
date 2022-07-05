@@ -1,22 +1,26 @@
 const express = require("express");
 const route = express();
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+// const MongoStore = require("connect-mongo");
+const ramdomsChild = require("../utils/ramdomsChild");
+const { fork } = require("child_process");
 
 const ChatContainer = require("../src/daos/file/chatContainer");
 const ProductosContainer = require("../src/daos/file/productosContainer");
 
-const util = require("util");
-const { fakerCreate } = require("../utils/mocks");
+// const util = require("util");
+// const { fakerCreate } = require("../utils/mocks");
 const { normalization } = require("../utils/normalizr");
 
+const info = require("../utils/info");
+
 const compressionRatio = require("../utils/calculator");
-const userLogged = require("../utils/sessions");
+// const userLogged = require("../utils/sessions");
 
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
 const fs = require("fs");
-const { response } = require("express");
+// const { response } = require("express");
 
 const SERVER = new HttpServer(route);
 const io = new IOServer(SERVER);
@@ -34,25 +38,25 @@ const validatePass = require("../utils/passValidatos");
 const createHash = require("../utils/hashGenerator");
 const { TIEMPO_EXPIRACION } = require("../src/config/globals");
 
-route.use(session({
-    secret: 'diego',
+route.use(
+  session({
+    secret: "diego",
     cookie: {
-        httpOnly: false,
-        secure: false,
-        maxAge: parseInt(TIEMPO_EXPIRACION)
+      httpOnly: false,
+      secure: false,
+      maxAge: parseInt(TIEMPO_EXPIRACION),
     },
     rolling: true,
     resave: true,
-    saveUninitialized: true
-}))
-route.use(express.json());
-route.use(express.urlencoded({extended:true}));
+    saveUninitialized: true,
+  })
+);
+// route.use(express.json());
+// route.use(express.urlencoded({extended:true}));
 route.use(passport.initialize());
 route.use(passport.session());
 
-// route.set('view engine', 'hbs');
 route.set("views", "./views");
-// route.use(express.static(__dirname + "/public"));
 
 passport.use(
   "login",
@@ -125,10 +129,10 @@ const productos = new ProductosContainer();
 
 const chatContainer = new ChatContainer();
 
-// INDEX
+// INDEX--------------------------------
 route.get("/", routes.getRoot);
 
-// LOGIN
+// LOGIN--------------------------------
 route.get("/login", routes.getLogin);
 route.post(
   "/login",
@@ -137,7 +141,7 @@ route.post(
 );
 route.get("/failLogin", routes.getFaillogin);
 
-// SIGNUP
+// SIGNUP--------------------------------
 route.get("/signUp", routes.getSignup);
 route.post(
   "/signUp",
@@ -146,9 +150,10 @@ route.post(
 );
 route.get("failSingup", routes.getFailsignup);
 
-// LOGOUT
+// LOGOUT--------------------------------
 route.get("/logout", routes.getLogout);
 
+// PRODUCTOS - CHAT- TEST--------------------------------
 let compression = null;
 io.on("connection", (socket) => {
   console.log("Cliente en la Home de la web");
@@ -161,7 +166,6 @@ io.on("connection", (socket) => {
     io.sockets.emit("messages", prueba);
   });
 });
-
 io.on("connection", (socket) => {
   const chat = chatContainer.read();
   const dataContainer = { id: 1, posts: [] };
@@ -188,32 +192,6 @@ io.on("connection", (socket) => {
     console.log(error);
   }
 });
-
-// app.get("/login", (req, res) => {
-//   res.render("login");
-// });
-// let name = "NO HAY NOMBRE";
-
-// app.post("/login", (req, res) => {
-//   req.session.user = req.body.nombre;
-
-//   req.session.logged = true;
-//   let data = req.body;
-//   name = req.session.user;
-
-//   res.render("main", { data, name });
-// });
-
-// app.get("/logout", (req, res) => {
-//   req.session.destroy((error) => {
-//     if (error) {
-//       res.send({ status: "Logout Error", body: error });
-//     }
-//   });
-
-//   res.render("logout", { name });
-// });
-
 route.get("/productos", routes.postLogin, (req, res) => {
   res.render("main");
 });
@@ -223,16 +201,38 @@ route.post("/productos", routes.postLogin, (req, res) => {
 route.get("/chat", routes.chatLogin, (req, res) => {
   res.render("about", { isUser: true });
 });
-
 route.get("/test/:num", (req, res) => {
   try {
-    res.jsonp(productos.mocks(req.params.num));
+    res.json(productos.mocks(req.params.num));
   } catch (err) {
     console.log(err);
   }
 });
 
-// FAIL ROUTE
+route.get("/info", info)
+
+route.get("/api/randoms", (req, res) => {
+  let num = null;
+  if (req.query.cant == undefined) {
+    num = 100000000;
+  } else {
+    num = req.query.cant;
+  }
+  const child = fork("utils/ramdomsChild.js");
+  child.send(num);
+  child.on("message", (data) => {
+    try {
+      let mensaje = `Se han calculado en total, ${num} numeros:`;
+      let result = JSON.parse(data);
+      res.render("calculator", { mensaje, result });
+    } catch (error) {
+      console.log("ERROR");
+      console.log(error);
+    }
+  });
+});
+
+// FAIL ROUTE--------------------------------
 route.get("*", (req, res) => {
   res.status(404).render("error", {});
 });
