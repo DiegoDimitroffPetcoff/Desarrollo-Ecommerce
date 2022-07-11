@@ -48,7 +48,9 @@ let storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now());
   },
 });
-
+process.on('message',msg=>{
+  app.use(route);
+})
 app.use(route);
 const upload = multer({ storage: storage });
 module.exports = {app};

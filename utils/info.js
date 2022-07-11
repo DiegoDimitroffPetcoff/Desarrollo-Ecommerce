@@ -1,4 +1,5 @@
 const parseArgs = require("minimist");
+const numCPUs = require("os").cpus().length;
 
 function info(req, res) {
   let argumentos = parseArgs(process.argv.slice(2));
@@ -11,12 +12,14 @@ function info(req, res) {
       return `Los argumentos de entrada son: ${argumentos._}`;
     }
   }
+
   let nombrePlataforma = `PLATAFORMA UTILIZADA: ${process.platform}`;
   let versionNodeJs = `VERSION UTILIZADA DE NODE JS: ${process.version}`;
   let rss = `Memoria utiliazda: ${process.memoryUsage}`;
   let pathEjecucion = `PATH DE EJECUCION: ${process.cwd()}`;
   let processID = `ID DEL PROCESO: ${process.pid}`;
   let carpetaProyecto = `CARPETA DE PROYECTO: ${plataforma._[1]}`;
+  let cpu = `número de procesadores presentes en el servidor: ${numCPUs} `;
 
   res.render("information", {
     carpetaProyecto,
@@ -26,6 +29,7 @@ function info(req, res) {
     rss,
     versionNodeJs,
     nombrePlataforma,
+    cpu,
   });
 }
 module.exports = info;
