@@ -1,5 +1,5 @@
 let num = null;
-console.log("children activated");
+
 
 process.on("message", (message) => {
   num = message;
