@@ -1,7 +1,12 @@
 const parseArgs = require("minimist");
 const numCPUs = require("os").cpus().length;
+const log4js = require("log4js");
 
 function info(req, res) {
+  const logger = log4js.getLogger("info");
+
+  logger.info("Log info");
+
   let argumentos = parseArgs(process.argv.slice(2));
   let plataforma = parseArgs(process.argv);
   let argumentosEntrada = argumentosFuncion();

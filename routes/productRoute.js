@@ -1,9 +1,19 @@
 const express = require("express");
+const { Server: HttpServer } = require("http");
+const { Server: IOServer } = require("socket.io");
+
 const route = express();
+
+const SERVER = new HttpServer(route);
+const io = new IOServer(SERVER);
+
 const session = require("express-session");
+const log4js = require("log4js");
+
 // const MongoStore = require("connect-mongo");
 const ramdomsChild = require("../utils/ramdomsChild");
 const { fork } = require("child_process");
+// const compressionModule = require('compression');
 
 const ChatContainer = require("../src/daos/file/chatContainer");
 const ProductosContainer = require("../src/daos/file/productosContainer");
@@ -17,13 +27,8 @@ const info = require("../utils/info");
 const compressionRatio = require("../utils/calculator");
 // const userLogged = require("../utils/sessions");
 
-const { Server: HttpServer } = require("http");
-const { Server: IOServer } = require("socket.io");
 const fs = require("fs");
 // const { response } = require("express");
-
-const SERVER = new HttpServer(route);
-const io = new IOServer(SERVER);
 
 route.use(express.json());
 route.use(express.urlencoded({ extended: true }));
@@ -129,6 +134,18 @@ const productos = new ProductosContainer();
 
 const chatContainer = new ChatContainer();
 
+log4js.configure({
+  appenders: {
+    miLoggerConsole2: { type: "console" },
+    errorConsole: { type: "console" },
+  },
+  categories: {
+    default: { appenders: ["miLoggerConsole2"], level: "warn" },
+    info: { appenders: ["miLoggerConsole2"], level: "info" },
+    error: { appenders: ["errorConsole"], level: "error" },
+  },
+});
+
 // INDEX--------------------------------
 route.get("/", routes.getRoot);
 
@@ -153,8 +170,9 @@ route.get("failSingup", routes.getFailsignup);
 // LOGOUT--------------------------------
 route.get("/logout", routes.getLogout);
 
-// PRODUCTOS - CHAT- TEST--------------------------------
+// PRODUCTOS - --------------------------------
 let compression = null;
+console.log("PRIMERO");
 io.on("connection", (socket) => {
   console.log("Cliente en la Home de la web");
   let prueba = productos.read();
@@ -166,6 +184,8 @@ io.on("connection", (socket) => {
     io.sockets.emit("messages", prueba);
   });
 });
+
+// CHAT- ---------------------------------
 io.on("connection", (socket) => {
   const chat = chatContainer.read();
   const dataContainer = { id: 1, posts: [] };
@@ -189,6 +209,9 @@ io.on("connection", (socket) => {
   try {
     socket.emit("compression", compression);
   } catch (error) {
+    const logger = log4js.getLogger("errorConsole");
+
+    logger.error("Log Error");
     console.log(error);
   }
 });
@@ -208,8 +231,9 @@ route.get("/test/:num", (req, res) => {
     console.log(err);
   }
 });
+// route.use(compressionModule());
 
-route.get("/info", info)
+route.get("/info", info);
 
 route.get("/api/randoms", (req, res) => {
   let num = null;
@@ -234,6 +258,10 @@ route.get("/api/randoms", (req, res) => {
 
 // FAIL ROUTE--------------------------------
 route.get("*", (req, res) => {
+  const logger = log4js.getLogger("warnConsole");
+
+  logger.warn("Log WARN");
+
   res.status(404).render("error", {});
 });
 
