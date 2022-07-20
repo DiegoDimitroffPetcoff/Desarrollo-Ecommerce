@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 8080;
 const MODO = process.argv[2] || "fork";
 
 if (MODO == "fork") {
-app.listen(PORT, () => {
+SERVER.listen(PORT, () => {
   console.log(`Server on ${PORT}`);
 })
 SERVER.on("Error", (error) => console.log("error en servidor ${error}"));
@@ -26,7 +26,7 @@ SERVER.on("Error", (error) => console.log("error en servidor ${error}"));
 
     cluster.on("exit", (worker) => {});
   } else {
-    app.listen(PORT, () => {
+    SERVER.listen(PORT, () => {
       console.log(`Server Cluster on ${PORT}`);
     });
     SERVER.on("Error", (error) => console.log("error en servidor ${error}"));

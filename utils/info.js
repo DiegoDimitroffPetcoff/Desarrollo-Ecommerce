@@ -5,7 +5,7 @@ const log4js = require("log4js");
 function info(req, res) {
   const logger = log4js.getLogger("info");
 
-  logger.info("Log info");
+  logger.info("Info: Peticion recibida en la ruta /info");
 
   let argumentos = parseArgs(process.argv.slice(2));
   let plataforma = parseArgs(process.argv);

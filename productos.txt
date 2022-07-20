@@ -98,5 +98,10 @@
 		"title": "Camisa",
 		"price": "200",
 		"id": 20
+	},
+	{
+		"title": "Camperon",
+		"price": "3000",
+		"id": 21
 	}
 ]

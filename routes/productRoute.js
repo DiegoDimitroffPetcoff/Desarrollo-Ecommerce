@@ -136,13 +136,15 @@ const chatContainer = new ChatContainer();
 
 log4js.configure({
   appenders: {
-    miLoggerConsole2: { type: "console" },
-    errorConsole: { type: "console" },
-  },
+    Console: { type: "console" },
+    // errorFile: { type: "file", filename:'loggerError.log' },
+    warnFile: {type:'file', filename:'warn.log'},
+    errorFile: {type:'file', filename:'error.log'}
+  }, 
   categories: {
-    default: { appenders: ["miLoggerConsole2"], level: "warn" },
-    info: { appenders: ["miLoggerConsole2"], level: "info" },
-    error: { appenders: ["errorConsole"], level: "error" },
+    default: { appenders: ["warnFile","Console"], level: "warn" },
+    info: { appenders: ["Console"], level: "info" },
+    error: { appenders: ["errorFile","Console"], level: "error" },
   },
 });
 
@@ -172,9 +174,11 @@ route.get("/logout", routes.getLogout);
 
 // PRODUCTOS - --------------------------------
 let compression = null;
-console.log("PRIMERO");
+
 io.on("connection", (socket) => {
-  console.log("Cliente en la Home de la web");
+try {
+
+  console.log("EN LA WEB PRINCIPAL");
   let prueba = productos.read();
   socket.emit("messages", prueba);
   socket.on("new-message", (data1) => {
@@ -183,15 +187,24 @@ io.on("connection", (socket) => {
 
     io.sockets.emit("messages", prueba);
   });
+} catch (error) {
+  let logger = log4js.getLogger("errorConsole");
+  logger.error("PROBANDO EL LOG DE ERROR");
+}
 });
 
 // CHAT- ---------------------------------
 io.on("connection", (socket) => {
+  try {
+  // SI QUITO EL COMENTARIO DE LAS LINEAS 192 Y 193 PUEDO OBSERVER QUE SE MUESTRA EN LA CONSOLA EL ERROR DE MANERA CORRECTA
+  // let logger = log4js.getLogger("error");
+  // logger.error("PROBANDO EL LOG DE ERROR");
+
   const chat = chatContainer.read();
   const dataContainer = { id: 1, posts: [] };
   dataContainer.posts = chat;
   const chatNormalizado = normalization(dataContainer);
-  console.log("Usuario conectado al Chat");
+  console.log("USUARIO CONECTADO AL CHAT");
   socket.emit("chat", chatNormalizado);
 
   socket.on("newChat", (data) => {
@@ -205,13 +218,20 @@ io.on("connection", (socket) => {
     let dataNormalized = normalization(dataContainer);
     let dataComprimida = JSON.stringify(dataNormalized).length;
     compression = compressionRatio(dataNocomprimida, dataComprimida);
-  });
-  try {
-    socket.emit("compression", compression);
-  } catch (error) {
-    const logger = log4js.getLogger("errorConsole");
+    });
+    
+    try {
+      socket.emit("compression", compression);
+    } catch (error) {
+      let logger = log4js.getLogger("error");
 
-    logger.error("Log Error");
+      logger.error("Error: En la Compresion del Chat");
+      console.log(error);
+    }
+  } catch (error) {
+    let logger = log4js.getLogger("error");
+
+    logger.error("Error: Hubo un error en la ruta del Chat");
     console.log(error);
   }
 });
@@ -236,6 +256,7 @@ route.get("/test/:num", (req, res) => {
 route.get("/info", info);
 
 route.get("/api/randoms", (req, res) => {
+try {
   let num = null;
   if (req.query.cant == undefined) {
     num = 100000000;
@@ -254,15 +275,19 @@ route.get("/api/randoms", (req, res) => {
       console.log(error);
     }
   });
+} catch (error) {
+  let logger = log4js.getLogger("errorConsole");
+
+  logger.error("Log Error");
+  console.log(error);
+}
 });
 
 // FAIL ROUTE--------------------------------
 route.get("*", (req, res) => {
-  const logger = log4js.getLogger("warnConsole");
-
-  logger.warn("Log WARN");
-
-  res.status(404).render("error", {});
+  const logger = log4js.getLogger("warn");  
+  logger.warn("Warn:404. Usuario No logeado")
+  res.status(404).render("error",{});
 });
 
 module.exports = { SERVER, route };

@@ -19,7 +19,7 @@ if (cluster.isMaster) {
     console.log(`Server to RAMDOM on ${8081}`);
   });
 
-  app.listen(PORT, () => {
+  SERVER.listen(PORT, () => {
     console.log(`Server on ${PORT}`);
   });
   SERVER.on("Error", (error) => console.log("error en servidor ${error}"));

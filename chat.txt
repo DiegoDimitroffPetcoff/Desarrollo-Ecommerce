@@ -432,5 +432,19 @@
 			"text": "Alguien disponible?"
 		},
 		"id": 31
+	},
+	{
+		"author": {
+			"email": "diego@gmail.com",
+			"nombre": "Diego",
+			"apellido": "Dimitroff",
+			"edad": "32",
+			"alias": "Dimi",
+			"avatar": "avatar"
+		},
+		"text": {
+			"text": "Buenas noches a todos! como estan hoy?"
+		},
+		"id": 32
 	}
 ]
