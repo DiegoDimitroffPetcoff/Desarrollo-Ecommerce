@@ -15,6 +15,7 @@ const ramdomsChild = require("../utils/ramdomsChild");
 const { fork } = require("child_process");
 // const compressionModule = require('compression');
 
+
 const ChatContainer = require("../src/daos/file/chatContainer");
 const ProductosContainer = require("../src/daos/file/productosContainer");
 
@@ -289,5 +290,6 @@ route.get("*", (req, res) => {
   logger.warn("Warn:404. Usuario No logeado")
   res.status(404).render("error",{});
 });
+
 
 module.exports = { SERVER, route };
