@@ -1,4 +1,8 @@
 const { app } = require("./app");
+// const express = require('express');
+// const app = express()
+
+
 const { SERVER } = require("./routes/productRoute");
 const PORT = parseInt(process.argv[2]) || 8080;
 

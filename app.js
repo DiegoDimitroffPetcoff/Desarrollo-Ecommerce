@@ -1,24 +1,17 @@
 const express = require("express");
 const app = express();
-const ramdom= express();
-const { fork } = require("child_process");
+
+
+
 
 
 const { SERVER, route } = require("./routes/productRoute");
 
 
 const multer = require("multer");
+
 const handlebars = require("express-handlebars");
 const dotenv = require("dotenv").config();
-// const path = require("path");
-// const dotenv = require("dotenv");
-// dotenv.config({
-//   path:
-//     process.env.MODO == "production"
-//       ? path.resolve(__dirname, "dev.env")
-//       : path.resolve(__dirname, "testing.env"),
-// });
-// console.log(`Ambiente: ${process.env.AMBIENTE}`);
 
 
 app.use(express.json());
@@ -38,13 +31,13 @@ app.engine(
   })
 );
 
-ramdom.set("view engine", "hbs");
-ramdom.set("views", "./views");
+app.set("view engine", "hbs");
+app.set("views", "./views");
 
-ramdom.use(express.json());
-ramdom.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-ramdom.engine(
+app.engine(
   "hbs",
   handlebars.engine({
     extname: ".hbs",
@@ -58,8 +51,6 @@ ramdom.engine(
   })
 );
 
-app.set("view engine", "hbs");
-app.set("views", "./views");
 
 
 
@@ -71,31 +62,15 @@ let storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now());
   },
 });
+
 process.on('message',msg=>{
   app.use(route);
 })
-app.use(route);
 
-ramdom.get("/api/randoms", (req, res) => {
-  let num = null;
-  if (req.query.cant == undefined) {
-    num = 100000000;
-  } else {
-    num = req.query.cant;
-  }
-  const child = fork("./utils/ramdomsChild.js");
-  child.send(num);
-  child.on("message", (data) => {
-    try {
-      let mensaje = `Se han calculado en total, ${num} numeros:`;
-      let result = JSON.parse(data);
-      res.render("calculator", { mensaje, result });
-    } catch (error) {
-      console.log("ERROR");
-      console.log(error);
-    }
-  });
-});
+
+app.use( route);
+
+
 
 const upload = multer({ storage: storage });
-module.exports = {app, ramdom};
+module.exports = app;

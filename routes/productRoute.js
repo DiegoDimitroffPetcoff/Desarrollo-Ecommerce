@@ -284,6 +284,8 @@ try {
 }
 });
 
+
+
 // FAIL ROUTE--------------------------------
 route.get("*", (req, res) => {
   const logger = log4js.getLogger("warn");  
