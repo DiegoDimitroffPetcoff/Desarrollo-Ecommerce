@@ -1,5 +1,7 @@
 const socket = io.connect();
 
+
+
 function addMessage(e) {
   alert("Agregaste un nuevo producto")
   const mensaje = {

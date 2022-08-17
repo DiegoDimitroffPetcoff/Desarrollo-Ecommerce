@@ -6,10 +6,10 @@ const configs = require('../config/globals')
 
 console.log(configs.MONGO_URI);
 
-mongoose.connect('mongodb://localhost/test',{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-} );
+// mongoose.connect('mongodb://localhost/test',{
+//     useNewUrlParser:true,
+//     useUnifiedTopology:true
+// } );
 
 const usuariosCollection = 'usuarios';
 

@@ -1,7 +1,31 @@
 const log4js = require("log4js");
+const passport = require("passport");
+const route = require("../routes/productRoute");
+
+
+const { Server: HttpServer } = require("http");
+const { Server: IOServer } = require("socket.io");
+
+// const {SERVER} = require('../routes/productRoute')
+const SERVER = new HttpServer(route);
+const io = new IOServer(SERVER);
+
+
+
+const { normalization } = require("./normalizr");
+const compressionRatio = require("./calculator");
+
+
+const service = require('../src/service/serviceMongo/serviceMongo')
+
+
+
 
 // ROOT---------------------------
-function getRoot(req, res) {
+async function  getRoot (req, res) {
+  let productos = await service.getContentFile();
+  let productosID = await service.deleteById(25);
+
   const logger = log4js.getLogger("info");
   logger.info("Peticion recibida en la ruta /root");
   res.render("root");
@@ -11,21 +35,26 @@ function getRoot(req, res) {
 function getLogin(req, res) {
   const logger = log4js.getLogger("info");
   logger.info("Peticion recibida en la ruta /getLogin");
-  res.render("login");
+  "/login", res.render("login");
 }
+
 function postLogin(req, res) {
   if (req.isAuthenticated()) {
     const logger = log4js.getLogger("info");
-    logger.info("Peticion recibida en la ruta /login. Usuario Correctamente Logeado");
+    logger.info(
+      "Peticion recibida en la ruta /login. Usuario Correctamente Logeado"
+    );
     // console.log(req.user);
     let user = req.user;
     res.render("main", { user: user, isUser: true });
   } else {
     let logger = log4js.getLogger("error");
     logger.error("Hubo un error en el Logeo");
+
     res.redirect("login");
   }
 }
+
 function chatLogin(req, res) {
   if (req.isAuthenticated()) {
     const logger = log4js.getLogger("info");
@@ -34,8 +63,10 @@ function chatLogin(req, res) {
     let user = req.user;
     res.render("about", { user: user, isUser: true });
   } else {
+    console.error();
+   
     let logger = log4js.getLogger("error");
-    logger.error("Hubo un error en el Logeo");
+    logger.error("Error en el CHAT");
     res.redirect("login");
   }
 }
@@ -50,13 +81,17 @@ function getFaillogin(req, res) {
 // SIGN UP---------------------------
 function getSignup(req, res) {
   const logger = log4js.getLogger("info");
-  logger.info("Peticion recibida en la ruta /signup. Usuario Creado Correctamente");
+  logger.info(
+    "Peticion recibida en la ruta /signup. Usuario Creado Correctamente"
+  );
   res.render("signup");
 }
 function postSignup(req, res) {
-  if (req.isAuthenticated()) {
+  if (passport.authenticate("signup")) {
     const logger = log4js.getLogger("info");
-    logger.info("Peticion recibida en la ruta /signup. Usuario Creado Correctamente");
+    logger.info(
+      "Peticion recibida en la ruta /signup. Usuario Creado Correctamente"
+    );
     let user = req.user;
     let isUser = true;
     res.render("profile", { user, isUser });
@@ -76,7 +111,9 @@ function getFailsignup(req, res) {
 // LOG OUT---------------------------
 function getLogout(req, res) {
   const logger = log4js.getLogger("info");
-  logger.info("Peticion recibida en la ruta /getLogout. Usuario Deslogeado Correctamente");
+  logger.info(
+    "Peticion recibida en la ruta /getLogout. Usuario Deslogeado Correctamente"
+  );
   req.logout((err) => {
     if (!err) {
       res.render("logout");
@@ -84,27 +121,64 @@ function getLogout(req, res) {
   });
 }
 
-// CHILD CONTROLER---------------------------
-// function randomsControler(req, res)  {
-//   let num = null;
-//   if (req.query.cant == undefined) {
-//     num = 100000;
-//   } else {
-//     num = req.query.cant;
-//   }
-//   const child = fork("utils/ramdomsChild.js");
-//   child.send(num);
-//   child.on("message", (data) => {
-//     try {
-//       let mensaje = `Se han calculado ${num} de numeros:`;
-//       let result = JSON.parse(data);
-//       res.json({ mensaje, result });
-//     } catch (error) {
-//       console.log("ERROR");
-//       console.log(error);
-//     }
-//   });
-// }
+const actiChat= ()=>{
+let compression = null;
+
+io.on("connection", (socket) => {
+  try {
+    console.log("controler.js");
+    let prueba = productos.read();
+    socket.emit("messages", prueba);
+    socket.on("new-message", (data1) => {
+      productos.save(data1);
+      prueba.push(data1);
+
+      io.sockets.emit("messages", prueba);
+    });
+  } catch (error) {
+    let logger = log4js.getLogger("errorConsole");
+    logger.error("PROBANDO EL LOG DE ERROR");
+  }
+});
+
+// CHAT- ---------------------------------
+io.on("connection", (socket) => {
+  try {
+    const chat = chatContainer.read();
+    const dataContainer = { id: 1, posts: [] };
+    dataContainer.posts = chat;
+    const chatNormalizado = normalization(dataContainer);
+    console.log("USUARIO CONECTADO AL CHAT");
+    socket.emit("chat", chatNormalizado);
+
+    socket.on("newChat", (data) => {
+      data.author.avatar = "avatar";
+      chatContainer.save(data);
+      // CHAT: TODO EL HISTORIAL. DATA: NUEVO POST GUARDADO
+      chat.push(data);
+      // DATACONTAINER: SE LE DA EL FORMATO PARA QUE SEA NORMALIZADO
+      dataContainer.posts = chat;
+      let dataNocomprimida = JSON.stringify(dataContainer).length;
+      let dataNormalized = normalization(dataContainer);
+      let dataComprimida = JSON.stringify(dataNormalized).length;
+      compression = compressionRatio(dataNocomprimida, dataComprimida);
+    });
+
+    try {
+      socket.emit("compression", compression);
+    } catch (error) {
+      let logger = log4js.getLogger("error");
+
+      logger.error("Error: En la Compresion del Chat");
+      console.log(error);
+    }
+  } catch (error) {
+    let logger = log4js.getLogger("error");
+
+    logger.error("Error: Hubo un error en la ruta del Chat");
+    console.log(error);
+  }
+});}
 
 module.exports = {
   getRoot,
@@ -116,4 +190,5 @@ module.exports = {
   getFailsignup,
   getLogout,
   chatLogin,
+  actiChat
 };
