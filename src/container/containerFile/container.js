@@ -5,7 +5,7 @@ class Contenedor {
     this.route = fileName;
   }
 
-  idLector() {
+  getLastId() {
     let objects = this.read();
     let id = null;
     objects.forEach((element) => {
@@ -28,7 +28,7 @@ class Contenedor {
     try {
       let array = [];
       array = this.read(this.route);
-      content.id = this.idLector() + 1;
+      content.id = this.getLastId() + 1;
       array.push(content);
       fs.writeFileSync(this.route, JSON.stringify(array, null, "\t"));
     } catch (error) {

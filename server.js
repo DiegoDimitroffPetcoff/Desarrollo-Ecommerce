@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const Factory = require('./src/daos/daoMongo/factory')
 
 const PORT = parseInt(process.argv[2]) || 8080;
 
@@ -167,6 +168,9 @@ let storage = multer.diskStorage({
 
 app.use(route);
 
+// factory
+const activaFactory = new Factory
+activaFactory
 
 
 const SERVER = httpServer.listen(PORT, () => {

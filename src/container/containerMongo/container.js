@@ -1,52 +1,37 @@
-const mongoose = require('mongoose');
-const productosSchema = require('../../models/productos')
+const mongoose = require("mongoose");
+const Factory = require('../../daos/daoMongo/factory')
+// const productosSchema = require("../../models/productos");
 
-
-class Contenedor {
-  constructor(schema) {
- 
-    const url = "mongodb://localhost:27017/ecommerceDB";
-    mongoose.connect(
-      url,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-      () => console.log("containerMongo.js")
-    );
-
-    
+class Contenedor extends Factory {
+  constructor(schema1) {
+    super(schema1);
+    this.schema1 = schema1;
+  
+    // const url = "mongodb://localhost:27017/ecommerceDB";
+    // mongoose.connect(
+    //   url,
+    //   {
+    //     useNewUrlParser: true,
+    //     useUnifiedTopology: true,
+    //   },
+    //   () => console.log("containerMongo.js")
+    // );
   }
 
-  idLector() {
-    let objects = this.read();
-    let id = null;
-    objects.forEach((element) => {
-      id = element.id;
-    });
-    return id;
+  async getId() {
+    return await this.model
+      .find({}, { id: 1, title: 1, _id: 0 })
+      .sort({ id: 1 });
   }
-
-  read() {
-    try {
-      let readFinal = fs.readFileSync(this.route, "utf-8");
-      let allProducts = JSON.parse(readFinal);
-      return allProducts;
-    } catch (error) {
-      console.log(`Error en la lectura del archivo: ${error}`);
-    }
+  async addProduct(content) {
+    let createModel = await new this.model(content);
+    return await createModel.save(content);
   }
-
-  save(content) {
-    try {
-      let array = [];
-      array = this.read(this.route);
-      content.id = this.idLector() + 1;
-      array.push(content);
-      fs.writeFileSync(this.route, JSON.stringify(array, null, "\t"));
-    } catch (error) {
-      console.log(`Error al intentar guardar el archivo: ${error}`);
-    }
+  async getContentFile(A, B, C) {
+    return await this.model.find(A, B).sort(C);
+  }
+  async delete(element) {
+    return await this.model.deleteOne(element);
   }
 }
 

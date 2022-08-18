@@ -26,8 +26,8 @@ const PRUEBA = {
 
 // ROOT---------------------------
 async function  getRoot (req, res) {
-  let productos = await service.getContentFile();
-  let productosID = await service.addProduct(PRUEBA);
+  // let productos = await service.read();
+  // let productosID = await service.addProduct(PRUEBA);
 
   const logger = log4js.getLogger("info");
   logger.info("Peticion recibida en la ruta /root");

@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 require('dotenv').config()
 const configs = require('../config/globals')
 
-
+console.log("****mongo");
 console.log(configs.MONGO_URI);
 
-// mongoose.connect('mongodb://localhost/test',{
-//     useNewUrlParser:true,
-//     useUnifiedTopology:true
-// } );
+mongoose.connect(configs.MONGO_URI,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+} );
 
 const usuariosCollection = 'usuarios';
 
@@ -20,5 +20,9 @@ const UsuarioSchema = new mongoose.Schema({
     username: {type: String, required: true, max: 100},
     password: {type: String, required: true, max: 100}
 });
+
+
+
+
 
 module.exports= mongoose.model(usuariosCollection, UsuarioSchema)

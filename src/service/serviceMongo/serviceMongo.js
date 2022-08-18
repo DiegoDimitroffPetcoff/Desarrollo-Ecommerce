@@ -1,4 +1,4 @@
-const ProductosDaoMongo = require("../../daos/daoMongo/daoMongo");
+const ProductosDaoMongo = require("../../daos/daoMongo/productosContainer");
 
 const producto = new ProductosDaoMongo();
 
@@ -9,12 +9,12 @@ async function getLastId() {
   let lastId = idMayor.id + 1;
   return lastId;
 }
-async function addProduct(content) {
+async function save(content) {
   content.id = await getLastId();
   let create = await producto.addProduct(content);
   return content;
 }
-async function getContentFile() {
+async function read() {
   let A = {};
   let B = {
     stock: 1,
@@ -53,53 +53,9 @@ async function deleteById(id) {
   }
 }
 
-
-
-
-// async function edit(content, id) {
-//   let contentAll = content;
-//   contentAll.update = moment().format("DD-MM-YYYY HH:mm:ss");
-//   let allProducts = await productos.updateOne(
-//     { id: id },
-//     {
-//       $set: {
-//         title: contentAll.title,
-//         price: contentAll.price,
-//         descripcion: contentAll.descripcion,
-//         foto: contentAll.foto,
-//         stock: contentAll.stock,
-//         update: contentAll.update,
-//       },
-//     }
-//   );
-
-//   let productosId = await productos.find(
-//     { id: id },
-//     {
-//       id: 1,
-//       title: 1,
-//       price: 1,
-//       descripcion: 1,
-//       foto: 1,
-//       stock: 1,
-//       date: 1,
-//       update: 1,
-//       _id: 0,
-//     }
-//   );
-//   return productosId;
-// }
-// async function saveInFile(content) {
-//   console.log(content);
-//   let carritoSave = new this.model(content);
-//   // let carritoSaved = await carritoSave.save();
-//   console.log(carritoSaved);
-// }
 module.exports = {
-  addProduct,
-  getContentFile,
-  edit,
-  saveInFile,
+  save,
+  read,
   getById,
   deleteById,
 };
