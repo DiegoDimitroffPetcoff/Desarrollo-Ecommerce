@@ -3,7 +3,7 @@ const Contenedor = require("../../container/containerFile/container");
 const {MockProduct} = require("../../../utils/mocks");
 
 
-class ProductosContainer extends Contenedor {
+class ProductosDAO extends Contenedor {
   constructor() {
     super("./productos.txt");
   }
@@ -20,4 +20,4 @@ class ProductosContainer extends Contenedor {
   }
 }
 
-module.exports = ProductosContainer;
+module.exports = ProductosDAO;

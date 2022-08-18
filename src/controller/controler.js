@@ -1,6 +1,6 @@
 const log4js = require("log4js");
 const passport = require("passport");
-const route = require("../routes/productRoute");
+const route = require("../../routes/productRoute");
 
 
 const { Server: HttpServer } = require("http");
@@ -12,19 +12,22 @@ const io = new IOServer(SERVER);
 
 
 
-const { normalization } = require("./normalizr");
-const compressionRatio = require("./calculator");
+const { normalization } = require("../../utils/normalizr");
+const compressionRatio = require("../../utils/calculator");
 
 
-const service = require('../src/service/serviceMongo/serviceMongo')
+const service = require('../service/serviceMongo/serviceMongo')
 
-
+const PRUEBA = {
+  "title": "ESTO ES UNA PRUEBA NOMAS",
+  "price": 3386
+}
 
 
 // ROOT---------------------------
 async function  getRoot (req, res) {
   let productos = await service.getContentFile();
-  let productosID = await service.deleteById(25);
+  let productosID = await service.addProduct(PRUEBA);
 
   const logger = log4js.getLogger("info");
   logger.info("Peticion recibida en la ruta /root");
@@ -121,64 +124,7 @@ function getLogout(req, res) {
   });
 }
 
-const actiChat= ()=>{
-let compression = null;
 
-io.on("connection", (socket) => {
-  try {
-    console.log("controler.js");
-    let prueba = productos.read();
-    socket.emit("messages", prueba);
-    socket.on("new-message", (data1) => {
-      productos.save(data1);
-      prueba.push(data1);
-
-      io.sockets.emit("messages", prueba);
-    });
-  } catch (error) {
-    let logger = log4js.getLogger("errorConsole");
-    logger.error("PROBANDO EL LOG DE ERROR");
-  }
-});
-
-// CHAT- ---------------------------------
-io.on("connection", (socket) => {
-  try {
-    const chat = chatContainer.read();
-    const dataContainer = { id: 1, posts: [] };
-    dataContainer.posts = chat;
-    const chatNormalizado = normalization(dataContainer);
-    console.log("USUARIO CONECTADO AL CHAT");
-    socket.emit("chat", chatNormalizado);
-
-    socket.on("newChat", (data) => {
-      data.author.avatar = "avatar";
-      chatContainer.save(data);
-      // CHAT: TODO EL HISTORIAL. DATA: NUEVO POST GUARDADO
-      chat.push(data);
-      // DATACONTAINER: SE LE DA EL FORMATO PARA QUE SEA NORMALIZADO
-      dataContainer.posts = chat;
-      let dataNocomprimida = JSON.stringify(dataContainer).length;
-      let dataNormalized = normalization(dataContainer);
-      let dataComprimida = JSON.stringify(dataNormalized).length;
-      compression = compressionRatio(dataNocomprimida, dataComprimida);
-    });
-
-    try {
-      socket.emit("compression", compression);
-    } catch (error) {
-      let logger = log4js.getLogger("error");
-
-      logger.error("Error: En la Compresion del Chat");
-      console.log(error);
-    }
-  } catch (error) {
-    let logger = log4js.getLogger("error");
-
-    logger.error("Error: Hubo un error en la ruta del Chat");
-    console.log(error);
-  }
-});}
 
 module.exports = {
   getRoot,
@@ -189,6 +135,5 @@ module.exports = {
   getFaillogin,
   getFailsignup,
   getLogout,
-  chatLogin,
-  actiChat
+  chatLogin
 };
