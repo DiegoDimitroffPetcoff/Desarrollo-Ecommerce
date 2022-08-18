@@ -4,7 +4,7 @@ const Schema = require("../../models/productos");
 class ChatDao extends Contenedor {
   constructor() {
     super(Schema);
-
+    this.model = Schema;
   }
 
 }

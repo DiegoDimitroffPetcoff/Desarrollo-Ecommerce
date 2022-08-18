@@ -1,15 +1,15 @@
 // const { configs } = require('dotenv');
 const mongoose = require('mongoose');
-require('dotenv').config()
-const configs = require('../config/globals')
+// require('dotenv').config()
+// const configs = require('../config/globals')
 
-console.log("****mongo");
-console.log(configs.MONGO_URI);
+// console.log("****mongo");
+// console.log(configs.MONGO_URI);
 
-mongoose.connect(configs.MONGO_URI,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-} );
+// mongoose.connect(configs.MONGO_URI,{
+//     useNewUrlParser:true,
+//     useUnifiedTopology:true
+// } );
 
 const usuariosCollection = 'usuarios';
 

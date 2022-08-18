@@ -184,7 +184,7 @@ const chatContainer = new ChatContainer();
 io.on("connection", (socket) => {
   let compression = null;
   try {
-    console.log("EN LA WEB PRINCIPAL DESDE EL BACK");
+
     let prueba = productos.read();
     socket.emit("messages", prueba);
     socket.on("new-message", (data1) => {
@@ -201,7 +201,7 @@ io.on("connection", (socket) => {
 
 // CHAT- ---------------------------------
 io.on("connection", (socket) => {
-  console.log("io escuchando2");
+
   try {
     const chat = chatContainer.read();
     const dataContainer = { id: 1, posts: [] };

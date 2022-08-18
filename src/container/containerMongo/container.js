@@ -3,9 +3,9 @@ const Factory = require('../../daos/daoMongo/factory')
 // const productosSchema = require("../../models/productos");
 
 class Contenedor extends Factory {
-  constructor(schema1) {
-    super(schema1);
-    this.schema1 = schema1;
+  constructor(schema) {
+    super(schema);
+    this.schema = schema;
   
     // const url = "mongodb://localhost:27017/ecommerceDB";
     // mongoose.connect(
