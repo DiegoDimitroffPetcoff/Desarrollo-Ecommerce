@@ -6,8 +6,6 @@ class ProductosDao extends Contenedor {
     super(Schema);
     this.model = Schema;
   }
-
-
 }
 
 module.exports = ProductosDao;

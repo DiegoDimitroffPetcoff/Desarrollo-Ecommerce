@@ -1,21 +1,10 @@
 const mongoose = require("mongoose");
 const Factory = require('../../../utils/factory')
-// const productosSchema = require("../../models/productos");
 
 class Contenedor extends Factory {
   constructor(schema) {
     super(schema);
     this.schema = schema;
-  
-    // const url = "mongodb://localhost:27017/ecommerceDB";
-    // mongoose.connect(
-    //   url,
-    //   {
-    //     useNewUrlParser: true,
-    //     useUnifiedTopology: true,
-    //   },
-    //   () => console.log("containerMongo.js")
-    // );
   }
 
   async getId() {
