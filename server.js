@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const Factory = require('./src/daos/daoMongo/factory')
+const Factory = require("./utils/factory");
 
 const PORT = parseInt(process.argv[2]) || 8080;
 
@@ -166,12 +166,13 @@ let storage = multer.diskStorage({
   },
 });
 
+// conexion a base de datos
+const DBS = Factory.getInstance();
+const DBSChosen = process.argv[2];
+DBS.connection(DBSChosen);
+//------------------------
+
 app.use(route);
-
-// factory
-const activaFactory = new Factory
-activaFactory
-
 
 const SERVER = httpServer.listen(PORT, () => {
   console.log(`Server on ${PORT}`);
@@ -184,7 +185,6 @@ const chatContainer = new ChatContainer();
 io.on("connection", (socket) => {
   let compression = null;
   try {
-
     let prueba = productos.read();
     socket.emit("messages", prueba);
     socket.on("new-message", (data1) => {
@@ -201,7 +201,6 @@ io.on("connection", (socket) => {
 
 // CHAT- ---------------------------------
 io.on("connection", (socket) => {
-
   try {
     const chat = chatContainer.read();
     const dataContainer = { id: 1, posts: [] };

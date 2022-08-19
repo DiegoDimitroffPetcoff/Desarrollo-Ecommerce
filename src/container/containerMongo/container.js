@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Factory = require('../../daos/daoMongo/factory')
+const Factory = require('../../../utils/factory')
 // const productosSchema = require("../../models/productos");
 
 class Contenedor extends Factory {
