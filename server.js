@@ -167,10 +167,18 @@ let storage = multer.diskStorage({
 });
 
 // conexion a base de datos
-const DBS = Factory.getInstance();
 const DBSChosen = process.argv[2];
+const DBS = Factory.getInstance(DBSChosen);
+const DBS2 = Factory.getInstance(DBSChosen);
+
 DBS.connection(DBSChosen);
 //------------------------
+// REALIZO TRIPLE INSTANCIACION PARA COMPROBAR CORRECTO FUNCIONAMIENTO DEL PATRON SINGLETON
+DBS2.connection(DBSChosen)
+DBS2.connection(DBSChosen)
+DBS.connection(DBSChosen)
+// funciona correctamente: Se corrobora la accion con el log "se activa factory". El cual se activa una sola vez independientemente de la cantidad de llamados que se haga a la misma
+
 
 app.use(route);
 
