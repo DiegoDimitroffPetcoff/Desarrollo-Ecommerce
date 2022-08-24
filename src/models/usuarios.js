@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const usuariosCollection = "usuarios";
 
+const usuariosCollection = "usuarios";
 const UsuarioSchema = new mongoose.Schema({
   firstName: { type: String, required: true, max: 100 },
   lastName: { type: String, required: true, max: 100 },

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const Factory = require("./utils/factory");
-
+const route = require("./routes/routes");
 const PORT = parseInt(process.argv[2]) || 8080;
 
 const { Server: HttpServer } = require("http");
@@ -12,7 +12,7 @@ const io = new IOServer(httpServer);
 
 app.use(express.static("./public"));
 
-const route = require("./routes/productRoute");
+// const route = require("./routes/productRoute");
 
 const multer = require("multer");
 const handlebars = require("express-handlebars");
@@ -166,21 +166,18 @@ let storage = multer.diskStorage({
   },
 });
 
+
+
 // conexion a base de datos
 const DBSChosen = process.argv[2];
 const DBS = Factory.getInstance(DBSChosen);
-const DBS2 = Factory.getInstance(DBSChosen);
-
 DBS.connection(DBSChosen);
-//------------------------
-// REALIZO TRIPLE INSTANCIACION PARA COMPROBAR CORRECTO FUNCIONAMIENTO DEL PATRON SINGLETON
-DBS2.connection(DBSChosen)
-DBS2.connection(DBSChosen)
-DBS.connection(DBSChosen)
-// funciona correctamente: Se corrobora la accion con el log "se activa factory". El cual se activa una sola vez independientemente de la cantidad de llamados que se haga a la misma
 
+// instanciacion rutas
+const Route = new route();
+// app.use(route);
 
-app.use(route);
+app.use(Route.start());
 
 const SERVER = httpServer.listen(PORT, () => {
   console.log(`Server on ${PORT}`);

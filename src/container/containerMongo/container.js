@@ -1,12 +1,7 @@
-const mongoose = require("mongoose");
-const Factory = require('../../../utils/factory')
-
-class Contenedor extends Factory {
+class Contenedor {
   constructor(schema) {
-    super(schema);
     this.schema = schema;
   }
-
   async getId() {
     return await this.model
       .find({}, { id: 1, title: 1, _id: 0 })
