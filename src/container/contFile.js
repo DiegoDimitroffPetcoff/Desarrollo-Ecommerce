@@ -4,7 +4,6 @@ class Contenedor {
   constructor(fileName) {
     this.route = fileName;
   }
-
   getLastId() {
     let objects = this.read();
     let id = null;
@@ -13,7 +12,6 @@ class Contenedor {
     });
     return id;
   }
-
   read() {
     try {
       let readFinal = fs.readFileSync(this.route, "utf-8");
@@ -23,8 +21,7 @@ class Contenedor {
       console.log(`Error en la lectura del archivo: ${error}`);
     }
   }
-
-  save(content) {
+  create(content) {
     try {
       let array = [];
       array = this.read(this.route);
@@ -36,5 +33,4 @@ class Contenedor {
     }
   }
 }
-
 module.exports = Contenedor;

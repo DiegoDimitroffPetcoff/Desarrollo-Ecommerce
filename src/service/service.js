@@ -1,4 +1,4 @@
-const ContainerDaoMongo = require("../../daos/daoMongo/productosContainer");
+const ContainerDaoMongo = require("../DAOs/productos/prodDaoMongo")
 
 // LOGICA DEL NEGOCIO
 
@@ -8,37 +8,22 @@ class Api {
   }
 
   getLastId = async () => {
-    let productosId = await this.producto.getId();
+    let productosId = await this.producto.getLasId();
     let idMayor = productosId[productosId.length - 1];
     let lastId = idMayor.id + 1;
     return lastId;
   };
   save = async (content) => {
     content.id = await getLastId();
-    let create = await this.producto.addProduct(content);
+    let create = await this.producto.create(content);
     return content;
   };
   read = async () => {
-    let A = {};
-    let B = {
-      stock: 1,
-      id: 1,
-      date: 1,
-      products: 1,
-      _id: 0,
-      title: 1,
-      price: 1,
-      descripcion: 1,
-      foto: 1,
-
-      update: 1,
-    };
-    let C = { id: 1 };
-    return this.producto.getContentFile(A, B, C);
+    return this.producto.read();
   };
   getById = async (id) => {
     let product = "No encontrado";
-    let content = await this.getContentFile();
+    let content = await this.read();
     content.forEach((element) => {
       if (element.id == id) {
         product = element;

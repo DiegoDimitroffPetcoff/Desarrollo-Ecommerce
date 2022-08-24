@@ -1,5 +1,5 @@
 const fs = require("fs");
-const Contenedor = require("../../container/containerFile/container");
+const Contenedor = require("../../container/contFile");
 const {MockProduct} = require("../../../utils/mocks");
 
 
@@ -14,7 +14,7 @@ class ProductosDAO extends Contenedor {
       let object = MockProduct()
       mocksList.push(object);
       console.log(object)
-      this.save(object)
+      this.create(object)
     }    
     return mocksList;
   }

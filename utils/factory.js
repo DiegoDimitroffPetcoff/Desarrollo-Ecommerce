@@ -3,7 +3,6 @@ require("dotenv").config();
 const configs = require("../src/config/globals");
 
 let instance = null;
-
 class Factory {
   constructor() {}
   static getInstance(data) {
@@ -27,5 +26,4 @@ class Factory {
     }
   }
 }
-
 module.exports = Factory;

@@ -32,8 +32,8 @@ const createHash = require("../CLASE12-master/utils/hashGenerator");
 const { TIEMPO_EXPIRACION } = require("../CLASE12-master/src/config/globals");
 
 // SOLO PARA SOCKET-----------------------
-const ChatContainer = require("./src/daos/daoFile/chatContainer");
-const ProductosContainer = require("./src/daos/daoFile/productosContainer");
+const ChatContainer = require("./src/DAOs/chat/chatDaoFile");
+const ProductosContainer = require("./src/DAOs/productos/prodDaoFile");
 const { normalization } = require("./utils/normalizr");
 const info = require("./utils/info");
 const compressionRatio = require("./utils/calculator");
@@ -193,14 +193,14 @@ io.on("connection", (socket) => {
     let prueba = productos.read();
     socket.emit("messages", prueba);
     socket.on("new-message", (data1) => {
-      productos.save(data1);
+      productos.create(data1);
       prueba.push(data1);
 
       io.sockets.emit("messages", prueba);
     });
   } catch (error) {
     let logger = log4js.getLogger("errorConsole");
-    logger.error("PROBANDO EL LOG DE ERROR");
+    logger.error("ERROR en activacion de lectura de productos");
   }
 });
 
@@ -216,7 +216,7 @@ io.on("connection", (socket) => {
 
     socket.on("newChat", (data) => {
       data.author.avatar = "avatar";
-      chatContainer.save(data);
+      chatContainer.create(data);
       // CHAT: TODO EL HISTORIAL. DATA: NUEVO POST GUARDADO
       chat.push(data);
       // DATACONTAINER: SE LE DA EL FORMATO PARA QUE SEA NORMALIZADO

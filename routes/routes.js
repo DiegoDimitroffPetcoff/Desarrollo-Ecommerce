@@ -9,7 +9,7 @@ const { fork } = require("child_process");
 const info = require("../utils/info");
 const passport = require("passport");
 
-const controler = require("../src/controller/controlerTest");
+const controler = require("../src/controller/controler");
 route.set("views", "./views");
 log4js.configure({
   appenders: {

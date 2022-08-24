@@ -1,5 +1,5 @@
 const fs = require("fs");
-const Contenedor = require("../../container/containerFile/container");
+const Contenedor = require("../../container/contFile");
 
 class ChatDAO extends Contenedor {
   constructor() {

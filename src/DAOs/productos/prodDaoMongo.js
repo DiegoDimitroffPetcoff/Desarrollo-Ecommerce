@@ -1,4 +1,4 @@
-const Contenedor = require("../../container/containerMongo/container");
+const Contenedor = require("../../container/contMongo");
 const Schema = require("../../models/productos");
 
 class ProductosDao extends Contenedor {
