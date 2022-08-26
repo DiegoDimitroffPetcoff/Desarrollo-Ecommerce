@@ -8,7 +8,7 @@ describe("test de integracion de tareas", function () {
     assert.strictEqual(todos.list().length, 0);
   });
 
-  it("deberoa adicionar tareas correctamente", function () {
+  it("deberia adicionar tareas correctamente", function () {
     const todos = new Todos();
 
     todos.add("run code");

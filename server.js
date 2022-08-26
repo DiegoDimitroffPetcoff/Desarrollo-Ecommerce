@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const Factory = require("./utils/factory");
 const route = require("./routes/routes");
+const RouteAxios = require("./routes/axiosRoute");
+
 const PORT = parseInt(process.argv[2]) || 8080;
 
 const { Server: HttpServer } = require("http");
@@ -175,10 +177,10 @@ DBS.connection(DBSChosen);
 
 // instanciacion rutas
 const Route = new route();
-// app.use(route);
+const axiosRoute = new RouteAxios();
 
-app.use(Route.start());
-
+// app.use(Route.start());
+app.use(axiosRoute.start());
 const SERVER = httpServer.listen(PORT, () => {
   console.log(`Server on ${PORT}`);
 });

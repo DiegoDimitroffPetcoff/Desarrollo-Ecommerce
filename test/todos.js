@@ -1,3 +1,6 @@
+const fs = require('fs')
+const Tareas = require('../routes/routes')
+const tareas = new Tareas()
 class Todos {
     constructor() {
       this.todos = [];
