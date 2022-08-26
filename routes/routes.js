@@ -1,6 +1,6 @@
 const express = require("express");
 const route = express();
-const axiosGET = require('../utils/axios.js')
+
 
 route.use(express.static("./public"));
 const log4js = require("log4js");
