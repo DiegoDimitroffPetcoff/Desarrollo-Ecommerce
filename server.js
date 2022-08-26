@@ -168,8 +168,6 @@ let storage = multer.diskStorage({
   },
 });
 
-
-
 // conexion a base de datos
 const DBSChosen = process.argv[2];
 const DBS = Factory.getInstance(DBSChosen);
@@ -177,10 +175,9 @@ DBS.connection(DBSChosen);
 
 // instanciacion rutas
 const Route = new route();
-const axiosRoute = new RouteAxios();
 
-// app.use(Route.start());
-app.use(axiosRoute.start());
+app.use(Route.start());
+
 const SERVER = httpServer.listen(PORT, () => {
   console.log(`Server on ${PORT}`);
 });
@@ -244,4 +241,6 @@ io.on("connection", (socket) => {
     console.log(error);
   }
 });
+
+
 

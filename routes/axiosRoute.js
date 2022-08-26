@@ -1,26 +1,27 @@
-const axios = require('axios').default;
-const Controler = require ('../src/controller/controler')
+// const axios = require('axios').default;
+// const Controler = require ('../src/controller/controler')
 
 
-class RouteAxios{
-  contructor(){
-  this.controler = new Controler()
-  }
+// class RouteAxios{
+//   contructor(){
+//   this.controler = new Controler()
+//   }
 
-start(){
-axios.get('/')
-  .then(function (response) {
+// async start(){
+//   route.get("/", (req,res)=>{
+//  await axios.get('/')
+//   .then(function (response) {
   
-    console.log(response);
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .then(function () {
-    // always executed
-  });}
+//     console.log(response);
+//   })
+//   .catch(function (error) {
+//     // handle error
+//     console.log(error);
+//   })
+//   .then(function () {
+//     // always executed
+//   });
+// })
+// }
 
-}
-
-module.exports = RouteAxios
+// module.exports = RouteAxios
