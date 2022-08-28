@@ -88,6 +88,21 @@ describe("comprobar que saveToFilecb() funcion", function () {
   });
 });
 
+describe("COMPRUEBA LA LECTURA DE PRODUCTOS", function () {
+  it("deberia guardar una tarea en el archivo.txt", function (done) {
+    const todos = new Todos();
+
+    todos.add("guardar tarea callback");
+    todos.saveToFileCb((err) => {
+      assert.strictEqual(fs.existsSync("todos.txt"), true);
+      let contenidoEsperado = "guardar tarea callback, false";
+      let content = fs.readFileSync("todos.txt").toString();
+      assert.strictEqual(content, contenidoEsperado);
+      done(err);
+    });
+  });
+});
+
 describe("comprobar que saveToFilePromises() funcion bien", function () {
   before(function () {
     console.log("\n********Comienzo TOTAL de teste***");
@@ -136,3 +151,5 @@ describe("comprobar que saveToFilePromises() funcion bien", function () {
     assert.strictEqual(content, contenidoEsperado);
   });
 });
+
+

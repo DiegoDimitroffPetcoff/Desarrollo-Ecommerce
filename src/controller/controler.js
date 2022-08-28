@@ -2,9 +2,6 @@ const log4js = require("log4js");
 const passport = require("passport");
 const ApiService = require("../service/service");
 
-const axiosGET = require('../../utils/axios')
-
-
 class Controler {
   constructor() {
     this.api = new ApiService();
@@ -13,7 +10,7 @@ class Controler {
   getRoot = async (req, res) => {
     const logger = log4js.getLogger("info");
     logger.info("Peticion recibida en la ruta /root");
-    axiosGET()
+
     res.render("root");
   };
 
