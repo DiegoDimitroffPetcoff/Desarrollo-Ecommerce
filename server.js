@@ -40,7 +40,10 @@ const { normalization } = require("./utils/normalizr");
 const info = require("./utils/info");
 const compressionRatio = require("./utils/calculator");
 const compression = require("compression");
-// SOLO PARA SOCKET-----------------------
+
+
+
+
 
 app.use(
   session({
@@ -174,14 +177,11 @@ const DBS = Factory.getInstance(DBSChosen);
 DBS.connection(DBSChosen);
 
 // instanciacion rutas
-const Route = new route();
 
-app.use(Route.start());
 
-const SERVER = httpServer.listen(PORT, () => {
-  console.log(`Server on ${PORT}`);
-});
-SERVER.on("Error", (error) => console.log("error en servidor ${error}"));
+
+
+
 
 const productos = new ProductosContainer();
 const chatContainer = new ChatContainer();
@@ -244,3 +244,19 @@ io.on("connection", (socket) => {
 
 
 
+// app.use('/graphql', graphqlHTTP({
+//   schema: schema,
+//   rootValue: root,
+//   graphiql: true
+// }));
+
+const Route = new route();
+
+app.use(Route.start());
+
+
+
+const SERVER = httpServer.listen(PORT, () => {
+  console.log(`Server on ${PORT}`);
+});
+SERVER.on("Error", (error) => console.log("error en servidor ${error}"));

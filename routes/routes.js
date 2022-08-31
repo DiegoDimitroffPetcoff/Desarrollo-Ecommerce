@@ -25,6 +25,20 @@ log4js.configure({
   },
 });
 
+// GRAPHQL-----------------------
+const {graphqlHTTP} = require('express-graphql');
+
+// GRAPHQL-----------------------
+
+
+// Root resolver
+let root = {
+  getPersonaById,
+  getPersonasByName,
+  getAllPersonas,
+  updatePersona
+};
+
 class Routes {
   constructor() {
     this.controler = new controler();
@@ -89,6 +103,12 @@ class Routes {
         console.log(error);
       }
     });
+
+    route.use('/graphql', graphqlHTTP({
+      schema: schema,
+      rootValue: root,
+      graphiql: true
+    }));
 
     route.get("*", (req, res) => {
       res.status(404).render("error", {});
